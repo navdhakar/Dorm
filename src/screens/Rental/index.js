@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
+import { serverURI } from '../../../config';
 
 import ImagePicker from 'react-native-image-crop-picker';
 
@@ -23,7 +24,14 @@ const Rentalpost = () => {
 
   const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
   const {colors} = useTheme();
-
+  const [no_guest, setno_guest] = useState('')
+  const [description, setdescription] = useState('')
+  const [price, setprice] = useState('')
+  const [state, setstate] = useState('')
+  const [city, setcity] = useState('')
+  const [area, setarea] = useState('')
+  const [address, setaddress] = useState('')
+ 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -49,6 +57,34 @@ const Rentalpost = () => {
       this.bs.current.snapTo(1);
     });
   }
+  const postrental = async () => {
+    const post_rental_data = {
+      name:"navdeep dhakar",
+      contact:"6367018851",
+      guest_no:no_guest,
+      description:description,
+      price:price,
+      state:state,
+      city:city,
+      area:area,
+      address:address,
+      image:'https://i2.au.reastatic.net/800x600/948ea0ed21babbcda649305c45693ed902e59e4fa06dbdb2a83f00b1fc6aaaa7/main.jpg'
+    }
+    
+    try {
+      const response = await fetch(`${serverURI}/post/rent_stay/rental`, {
+        method: "POST",
+        body: JSON.stringify(post_rental_data),// *GET, POST, PUT, DELETE, etc.
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const json = await response.json();
+      console.log(json)
+      return json;
+       
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const renderInner = () => (
     <View style={styles.panel}>
@@ -142,6 +178,7 @@ const Rentalpost = () => {
         <View style={[styles.action, {marginTop:10}]}>
           <FontAwesome name="user-o" color={colors.text} size={20} />
           <TextInput
+ 
             placeholder="Number of Guest"
             placeholderTextColor="#666666"
             autoCorrect={false}
@@ -151,11 +188,15 @@ const Rentalpost = () => {
                 color: colors.text,
               },
             ]}
+            onChangeText={newtext => {
+              setno_guest(newtext);
+            }}
           />
         </View>
         <View style={styles.action}>
           <FontAwesome name="sort-desc" color={colors.text} size={20} />
           <TextInput
+            
             placeholder="Description"
             placeholderTextColor="#666666"
             autoCorrect={false}
@@ -165,11 +206,16 @@ const Rentalpost = () => {
                 color: colors.text,
               },
             ]}
+            onChangeText={newtext => {
+              setdescription(newtext);
+            }}
           />
         </View>
         <View style={styles.action}>
           <FontAwesome name="rupee" color={colors.text} size={20} />
           <TextInput
+            
+
             placeholder="Price"
             placeholderTextColor="#666666"
             keyboardType="number-pad"
@@ -180,13 +226,17 @@ const Rentalpost = () => {
                 color: colors.text,
               },
             ]}
+            onChangeText={newtext => {
+              setprice(newtext);
+            }}
           />
         </View>
         
         <View style={styles.action}>
           <FontAwesome name="globe" color={colors.text} size={20} />
           <TextInput
-            placeholder="Country"
+
+            placeholder="State"
             placeholderTextColor="#666666"
             autoCorrect={false}
             style={[
@@ -195,12 +245,17 @@ const Rentalpost = () => {
                 color: colors.text,
               },
             ]}
+            onChangeText={newtext => {
+              setstate(newtext);
+            }}
           />
         </View>
         <View style={styles.action}>
           <Icon name="city" color={colors.text} size={20} />
 
           <TextInput
+
+            
             placeholder="City"
             placeholderTextColor="#666666"
             autoCorrect={false}
@@ -210,15 +265,19 @@ const Rentalpost = () => {
                 color: colors.text,
               },
             ]}
+            onChangeText={newtext => {
+              setcity(newtext);
+            }}
           />
         </View>
         <View style={styles.action}>
         <Icon name="map-marker-outline" color={colors.text} size={20} />
 
           <TextInput
+
             placeholder="Area"
             placeholderTextColor="#666666"
-            keyboardType="email-address"
+            
             autoCorrect={false}
             style={[
               styles.textInput,
@@ -226,15 +285,20 @@ const Rentalpost = () => {
                 color: colors.text,
               },
             ]}
+            onChangeText={newtext => {
+              setarea(newtext);
+            }}
           />
         </View>
         <View style={styles.action}>
         <Icon name="map-marker-outline" color={colors.text} size={20} />
 
           <TextInput
+        
+
             placeholder="Address"
             placeholderTextColor="#666666"
-            keyboardType="email-address"
+          
             autoCorrect={false}
             style={[
               styles.textInput,
@@ -242,9 +306,12 @@ const Rentalpost = () => {
                 color: colors.text,
               },
             ]}
+            onChangeText={newtext => {
+              setaddress(newtext);
+            }}
           />
         </View>
-        <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
+        <TouchableOpacity style={styles.commandButton} onPress={() => { postrental()}}>
           <Text style={styles.panelButtonTitle}>POST</Text>
         </TouchableOpacity>
       </Animated.View>

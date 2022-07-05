@@ -1,4 +1,6 @@
 import React from 'react';
+import {Image} from 'react-native';
+
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ExploreNavigator from './ExploreNavigator';
 import HomeScreen from '../screens/Home';
@@ -17,7 +19,7 @@ const HomeTabNavigator = (props) => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: '#377D71',
+        activeTintColor: '#38d3ae',
       }}>
       <Tab.Screen
         name={'Explore'}
@@ -42,7 +44,8 @@ const HomeTabNavigator = (props) => {
         component={Rentalpost}
         options={{
           tabBarIcon: ({color}) => (
-            <FontAwesome5 name="airbnb" size={25} color={color} />
+            // <FontAwesome5 name="airbnb" size={25} color={color} />
+            <Image source={require("../../assets/images/Dorm.png")} resizeMode={"contain"} style={{width:25, height:25}} />
           ),
         }}
       />
@@ -60,7 +63,7 @@ const HomeTabNavigator = (props) => {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({color}) => (
-            <EvilIcons name="user" size={25} color={color} />
+            <EvilIcons name="user" size={30} color={color} />
           ),
         }}
       />

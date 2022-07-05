@@ -8,8 +8,9 @@ import places from '../../../assets/data/feed';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { data_state, data_city, data_area } from '../../../assets/data/dropdown';
-
+import { serverURI } from '../../../config';
 const HomeScreen = (props) => {
+  console.log(serverURI)
   const navigation = useNavigation();
   const route  = useRoute()
   const [value, setValue] = useState(null);
@@ -17,8 +18,8 @@ const HomeScreen = (props) => {
   const [state, setstate] = useState(null);
   const [city, setcity] = useState(null);
   const [area, setarea] = useState(null);
-  
-  console.log(state)
+  const [search, setsearch] = useState(false)
+  console.log(process.env.NODE_ENV)
   const renderItem = (item) => {
 
     return (
@@ -35,10 +36,36 @@ const HomeScreen = (props) => {
       </View>
     );
   };
+  
+  const getcustomrentaldata = async () => {
+    const location_data = {
+      state:state,
+      city:city,
+      area:area
+    }
+    console.log(location_data)
+    try {
+      const response = await fetch(`${serverURI}/post/rent_stay/rental_local`, {
+        method: "POST",
+        body: JSON.stringify(location_data),// *GET, POST, PUT, DELETE, etc.
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const json = await response.json();
+      console.log(json)
+      setrental_data([])
+      setrental_data(json)
+      setsearch(!search)
+      console.log(rental_data)
+      return json;
+       
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const getglobalrentaldata = async () => {
     try {
       const response = await fetch(
-        'https://mocki.io/v1/4aa7ee48-4d81-450a-9b6a-9bd6e365cc87'
+        `${serverURI}/post/rent_stay/rental_all`
       );
       const json = await response.json();
 
@@ -52,7 +79,10 @@ const HomeScreen = (props) => {
   //  const rental_data_arr = JSON.parse(initial_rental_data)
   console.log(initial_rental_data)
   setrental_data(places)
-  }, []); 
+  }, []);
+  useEffect(() => {
+    setrental_data(rental_data)
+    }, [search]);
   return (
     <View>
       <StatusBar animated={true} backgroundColor="#38d3ae" />
@@ -68,7 +98,7 @@ const HomeScreen = (props) => {
       <ImageBackground
         source={require('../../../assets/images/wallpaper.jpg')}
         style={styles.image}>
-           <View style={{}}>
+      <View style={{}}>
       
       <Dropdown
         style={[styles.dropdown,]}
@@ -108,7 +138,7 @@ const HomeScreen = (props) => {
         searchPlaceholder="Search..."
         value={city}
         onChange={item => {
-          setcity(item.city);
+          setcity(item.value);
         }}
         // renderLeftIcon={() => (
         //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
@@ -130,7 +160,7 @@ const HomeScreen = (props) => {
         searchPlaceholder="Search..."
         value={area}
         onChange={item => {
-          setValue(item.area);
+          setarea(item.value);
         }}
         // renderLeftIcon={() => (
         //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
@@ -138,13 +168,14 @@ const HomeScreen = (props) => {
         renderItem={renderItem}
       />
       </View>
+      <Pressable
+          style={[styles.button]}
+          onPress={() => getcustomrentaldata()}>
+          <Text style={styles.buttonText}>Search</Text>
+        </Pressable>
         <Text style={styles.title}>Rental Near you</Text>
 
-        <Pressable
-          style={styles.button}
-          onPress={() => console.warn('Explore Btn clicked')}>
-          <Text style={styles.buttonText}>Explore nearby stays</Text>
-        </Pressable>
+        
       </ImageBackground>
       <PostScreen rental_data = {rental_data} />
       

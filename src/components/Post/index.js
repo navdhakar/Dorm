@@ -9,7 +9,7 @@ const Post = ({post}) => {
 
 
   console.log("post")
-  console.log(post)
+  // console.log(post)
   const navigation = useNavigation();
 
   const goToPostPage = () => {
@@ -26,23 +26,23 @@ const Post = ({post}) => {
 
       {/* Bed & Bedroom  */}
       <Text style={styles.bedrooms}>
-        {post.bed} bed {post.bedroom} bedroom
+         Contact: {post.contact}
       </Text>
 
       {/* Type & Description */}
-      <Text style={styles.description} numberOfLines={2}>
-        {post.type}. {post.title}
+      <Text >
+       <Text style={{color:'#5b5b5b',backgroundColor:"#48dcb6", borderRadius:20,}}>{post.guest_no} guests</Text><Text style={styles.description} numberOfLines={2}> {post.description}</Text>
       </Text>
 
       {/*  Old price & new price */}
       <Text style={styles.prices}>
-        <Text style={styles.oldPrice}>₹{post.oldPrice}</Text>
-        <Text style={styles.price}>  ₹{post.newPrice} </Text>
-        / night
+        <Text style={styles.oldPrice}>₹{post.price}</Text>
+        <Text style={styles.price}>  ₹{post.price} </Text>
+        / month
       </Text>
 
       {/*  Total price */}
-      <Text style={styles.totalPrice}>₹{post.newPrice * days} total</Text>
+      <Text style={styles.totalPrice}>address: {post.address}</Text>
     </Pressable>
   );
 };

@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     height: 500,
     resizeMode: 'cover',
     justifyContent: 'center',
+ 
   },
   title: {
     fontSize: 60,
@@ -16,8 +17,8 @@ const styles = StyleSheet.create({
 
   },
   button: {
-    backgroundColor: '#fff',
-    width: 200,
+    backgroundColor: '#38d3ae',
+    width: 100,
     height: 40,
     borderRadius: 10,
     marginTop: 25,
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color:"#fff"
   },
 
   searchButton: {

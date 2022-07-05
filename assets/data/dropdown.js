@@ -8,8 +8,8 @@ export const data_state = [
     
   ];
   export const data_area = [
-    { label: 'Jagatpura', value: 'Jagatpura' },
-    { label: 'Malviya nagar', value: 'Malviya nagar' },
+    { label: 'Jagatpura', value: 'jagatpura' },
+    { label: 'Malviya nagar', value: 'malviya nagar' },
     { label: 'Mansarovar', value: 'Mansarover' },
     { label: 'Gopal pura', value: 'Gopal pura' },
    

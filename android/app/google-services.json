@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1055385059251",
+    "project_id": "oneroom-466bd",
+    "storage_bucket": "oneroom-466bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055385059251:android:ef0eef41cf5228d54315c6",
+        "android_client_info": {
+          "package_name": "com.airbnbclone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055385059251-0t8v74ru1u1lhal5dudesqmphuvbkq28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.airbnbclone",
+            "certificate_hash": "21efb22a7b6ca10f79e5acb54d8b8b14939d9e13"
+          }
+        },
+        {
+          "client_id": "1055385059251-0da4aldl0jbgl60lg1sutkp01rnftvme.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQp2swJ8VMmqLPAGSVsAVEXm31i-PpaMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055385059251-0da4aldl0jbgl60lg1sutkp01rnftvme.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

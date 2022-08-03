@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
+import auth from '@react-native-firebase/auth';
 import {
   Avatar,
   Title,
@@ -15,6 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import files from '../assets/filesBase64';
 
 const ProfileScreen = () => {
+  const user = auth().currentUser;
 
   // const myCustomShare = async() => {
   //   const shareOptions = {
@@ -47,8 +49,8 @@ const ProfileScreen = () => {
             <Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-            }]}>Navdeep Dhakar</Title>
-            <Caption style={styles.caption}>@navdepdhakar1@gmail.com</Caption>
+            }]}>{user.displayName}</Title>
+            <Caption style={styles.caption}>{user.email}</Caption>
           </View>
         </View>
       </View>
@@ -105,6 +107,14 @@ const ProfileScreen = () => {
           <View style={styles.menuItem}>
             <Icon name="account-check-outline" color="#38d3ae" size={25}/>
             <Text style={styles.menuItemText}>Support</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => {auth()
+  .signOut()
+  .then(() => console.log('User signed out!'));}}>
+          <View style={styles.menuItem}>
+            <Icon name="account-check-outline" color="#38d3ae" size={25}/>
+            <Text style={styles.menuItemText}>Signout</Text>
           </View>
         </TouchableRipple>
         {/* <TouchableRipple onPress={() => {}}>

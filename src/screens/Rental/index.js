@@ -7,8 +7,9 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
-
+import storage from '@react-native-firebase/storage';
 import {useTheme} from 'react-native-paper';
+import auth from '@react-native-firebase/auth';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -21,7 +22,7 @@ import { serverURI } from '../../../config';
 import ImagePicker from 'react-native-image-crop-picker';
 
 const Rentalpost = () => {
-
+  const user = auth().currentUser;
   const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
   const {colors} = useTheme();
   const [no_guest, setno_guest] = useState('')
@@ -31,7 +32,7 @@ const Rentalpost = () => {
   const [city, setcity] = useState('')
   const [area, setarea] = useState('')
   const [address, setaddress] = useState('')
- 
+  const reference = storage().ref('rental.jpg');
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -53,11 +54,16 @@ const Rentalpost = () => {
       compressImageQuality: 0.7
     }).then(image => {
       console.log(image);
-      setImage(image.path);
-      this.bs.current.snapTo(1);
+      setImage(image.path); 
+
+      // this.bs.current.snapTo(1);
     });
   }
   const postrental = async () => {
+
+    // uploads file
+    await reference.putFile(image);
+    const url = await storage().ref('rental.jpg').getDownloadURL();
     const post_rental_data = {
       name:"navdeep dhakar",
       contact:"6367018851",
@@ -68,7 +74,7 @@ const Rentalpost = () => {
       city:city,
       area:area,
       address:address,
-      image:'https://i2.au.reastatic.net/800x600/948ea0ed21babbcda649305c45693ed902e59e4fa06dbdb2a83f00b1fc6aaaa7/main.jpg'
+      image:url
     }
     
     try {

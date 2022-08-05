@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Image, Pressable} from 'react-native';
+import {View, Text, Image, Pressable, Linking} from 'react-native';
 import styles from './styles.js';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,14 +17,18 @@ const Post = ({post}) => {
   }
 
   return (
-    <Pressable onPress={goToPostPage} style={styles.container}>
+   
+    <Pressable style={styles.container}>
       {/* Image  */}
+    
       <Image
         style={styles.image}
         source={{uri: post.image}}
       />
 
       {/* Bed & Bedroom  */}
+      <View style={{flexDirection:'row', alignContent:'center'}}>
+        <View style={{flex:0.7}}>
       <Text style={styles.bedrooms}>
          Contact: {post.contact}
       </Text>
@@ -43,7 +47,17 @@ const Post = ({post}) => {
 
       {/*  Total price */}
       <Text style={styles.totalPrice}>address: {post.address}</Text>
+      </View>
+      <View style={{justifyContent:"center", alignItems:'flex-end', flex:0.3}}>
+    <Pressable
+    style={[styles.button]}
+    onPress={() => {Linking.openURL(`tel:${post.contact}`)}}>
+    <Text style={styles.buttonText}>Call</Text>
     </Pressable>
+    </View>
+      </View>
+    </Pressable>
+
   );
 };
 

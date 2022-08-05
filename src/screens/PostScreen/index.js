@@ -11,15 +11,15 @@ const PostScreen = ({rental_data}) => {
   // const [render_rental_data, setrender_rental_data] = useState([])
   const render_rental_data = rental_data
 
-
   const post = places[0]
   const post1 = places[1]
   const post2 = places[2]
-
+  
    console.log("postscreen") 
    console.log(render_rental_data)
   return (
     <View style={{backgroundColor: 'white'}}>
+      
       <ScrollView>
         {
          render_rental_data.map(( data) => {
@@ -30,7 +30,7 @@ const PostScreen = ({rental_data}) => {
         }
       {/* <Post post={post} />
       <Post post={post1} />
-      <Post post={post2} /> */}
+      <Post post={post2} /> */} 
     </ScrollView>
     </View>
   );

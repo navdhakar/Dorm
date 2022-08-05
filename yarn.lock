@@ -7938,10 +7938,20 @@
   "resolved" "https://registry.npmjs.org/react-native-screens/-/react-native-screens-2.16.1.tgz"
   "version" "2.16.1"
 
+"react-native-share@^7.7.0":
+  "integrity" "sha512-cMmlMe4x7ER+K/XXsLASD4aarYPZJmpXhMubH3QOGzLFCDtW39bm489ZJYx9mfgdRLJVIitoDzKYA/HvM6qprw=="
+  "resolved" "https://registry.npmjs.org/react-native-share/-/react-native-share-7.7.0.tgz"
+  "version" "7.7.0"
+
 "react-native-tab-view@^2.15.2", "react-native-tab-view@>= 2.0.0":
   "integrity" "sha512-2hxLkBnZtEKFDyfvNO5EUywhy3f/EiLOBO8SWqKj4BMBTO0QwnybaPE5MVF00Fhz+VA4+h/iI40Dkrrtq70dGg=="
   "resolved" "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-2.15.2.tgz"
   "version" "2.15.2"
+
+"react-native-toast-message@^2.1.5":
+  "integrity" "sha512-mk3rELtBEhrhWBCN6CTaw0gypgL9ZNauX3xx1LUs4uee9vc0pVsghrKxO57vroUCcNL2hDeZSLJWdQNMCkGeaQ=="
+  "resolved" "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.1.5.tgz"
+  "version" "2.1.5"
 
 "react-native-vector-icons@*", "react-native-vector-icons@^7.1.0":
   "integrity" "sha512-V2a1zJ4i+kS8O4j183gIwX14St9AxxXabxwYpFBgRhvr2NDXyFcjHDEAgrOYYlt2W57e20aN1tBDU/I+wn9WtQ=="

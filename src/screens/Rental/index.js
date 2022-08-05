@@ -6,6 +6,8 @@ import {
   ImageBackground,
   TextInput,
   StyleSheet,
+  ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {useTheme} from 'react-native-paper';
@@ -20,8 +22,9 @@ import Animated from 'react-native-reanimated';
 import { serverURI } from '../../../config';
 
 import ImagePicker from 'react-native-image-crop-picker';
+import Toast from "react-native-toast-message";
 
-const Rentalpost = () => {
+const Rentalpost = ({navigation}) => {
   const user = auth().currentUser;
   const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
   const {colors} = useTheme();
@@ -32,7 +35,13 @@ const Rentalpost = () => {
   const [city, setcity] = useState('')
   const [area, setarea] = useState('')
   const [address, setaddress] = useState('')
-  const reference = storage().ref('rental.jpg');
+  const [phone_no, setphone_no] = useState('')
+
+  const [fileName, setfileName] = useState('')
+  const [sucessfullresponse, setsucceffulresponse] = useState(true)
+
+
+  const reference = storage().ref(`${user.email}/${fileName}`);
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -55,23 +64,25 @@ const Rentalpost = () => {
     }).then(image => {
       console.log(image);
       setImage(image.path); 
-
+      const file_name = image.path.split('/').pop();
+      setfileName(file_name)
       // this.bs.current.snapTo(1);
     });
   }
   const postrental = async () => {
-
+     setsucceffulresponse(false)
     // uploads file
     await reference.putFile(image);
-    const url = await storage().ref('rental.jpg').getDownloadURL();
+    //here unique user dir is generated with the help of user email as root dir on cloud.
+    const url = await storage().ref(`${user.email}/${fileName}`).getDownloadURL();
     const post_rental_data = {
       name:"navdeep dhakar",
-      contact:"6367018851",
+      contact:phone_no,
       guest_no:no_guest,
       description:description,
       price:price,
-      state:state,
-      city:city,
+      state:state.toUpperCase(),
+      city:city.toUpperCase(),
       area:area,
       address:address,
       image:url
@@ -83,12 +94,28 @@ const Rentalpost = () => {
         body: JSON.stringify(post_rental_data),// *GET, POST, PUT, DELETE, etc.
         headers: { 'Content-Type': 'application/json' },
       })
-      const json = await response.json();
-      console.log(json)
-      return json;
-       
+      await response.json().then((json) => {
+        setsucceffulresponse(true)
+      
+        console.log(json)
+    })
+    Toast.show({
+      type: "success",
+      text1: "Congratulation your rental is posted",
+      text2: "Thank you 👋",
+      visibilityTime: 3000,
+    });
+      
+
+     
     } catch (error) {
-      console.error(error);
+      setsucceffulresponse(true)
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error.message,
+        visibilityTime: 3000,
+      });
     }
   };
 
@@ -124,7 +151,7 @@ const Rentalpost = () => {
   const fall = new Animated.Value(1);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <BottomSheet
         ref={bs}
         snapPoints={[330, 0]}
@@ -176,12 +203,10 @@ const Rentalpost = () => {
               </ImageBackground>
             </View>
           </TouchableOpacity>
-          <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-            Navdeep Dhakar
-          </Text>
+       
         </View>
 
-        <View style={[styles.action, {marginTop:10}]}>
+        <View style={[styles.action, {paddingTop:50}]}>
           <FontAwesome name="user-o" color={colors.text} size={20} />
           <TextInput
  
@@ -234,6 +259,25 @@ const Rentalpost = () => {
             ]}
             onChangeText={newtext => {
               setprice(newtext);
+            }}
+          />
+        </View>
+        <View style={styles.action}>
+          <FontAwesome name="phone" color={colors.text} size={20} />
+          <TextInput
+
+            placeholder="Phone Number"
+            placeholderTextColor="#666666"
+            keyboardType="number-pad"
+            autoCorrect={false}
+            style={[
+              styles.textInput,
+              {
+                color: colors.text,
+              },
+            ]}
+            onChangeText={newtext => {
+              setphone_no(newtext);
             }}
           />
         </View>
@@ -317,11 +361,15 @@ const Rentalpost = () => {
             }}
           />
         </View>
-        <TouchableOpacity style={styles.commandButton} onPress={() => { postrental()}}>
-          <Text style={styles.panelButtonTitle}>POST</Text>
+        <TouchableOpacity style={styles.commandButton} onPress={() => { 
+          postrental();
+         
+
+          }}>
+          <Text style={styles.panelButtonTitle}>{sucessfullresponse ? "POST" :<ActivityIndicator size="small" color="white" />}</Text>
         </TouchableOpacity>
       </Animated.View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -395,7 +443,7 @@ const styles = StyleSheet.create({
   action: {
     flexDirection: 'row',
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,

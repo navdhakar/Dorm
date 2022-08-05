@@ -8,13 +8,13 @@
 
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
-import { StatusBar, } from 'react-native';
+import { StatusBar, View, ImageBackground, StyleSheet, Text} from 'react-native';
 
 import Router from './src/navigation/Router';
 
 import HomeScreen from './src/screens/Home';
 import auth from '@react-native-firebase/auth';
-
+import Toast from 'react-native-toast-message';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -52,22 +52,39 @@ const App =  () => {
   if (!user) {
     return (
       <>
+
+      <ImageBackground source={require("./assets/images/Dorm.png")} resizeMode="contain" style={styles.image}>
       <GoogleSigninButton
-      style={{ width: 192, height: 48 }}
+      style={{ width: 200, height: 60, marginBottom:30}}
       size={GoogleSigninButton.Size.Wide}
-      color={GoogleSigninButton.Color.Dark}
+      color={GoogleSigninButton.Color.Light}
       onPress={signIn}
       // disabled={this.state.isSigninInProgress}
     />
-      </>
+  
+    </ImageBackground>
+    </>
     );
   }
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <Router />
+      <Toast />
     </>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+    alignItems:'center',
+    justifyContent:'flex-end',
+ 
+  },
+ 
+});
 
 export default App;

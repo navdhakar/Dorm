@@ -1,16 +1,13 @@
 export const data_state = [
-    { label: 'Rajasthan', value: 'Rajasthan' },
+    { label: 'Rajasthan', value: 'RAJASTHAN' },
 
   ];
   export const data_city = [
-    { label: 'Jaipur', value: 'Jaipur' },
+    { label: 'Jaipur', value: 'JAIPUR' },
     
     
   ];
   export const data_area = [
-    { label: 'Jagatpura', value: 'jagatpura' },
-    { label: 'Malviya nagar', value: 'malviya nagar' },
-    { label: 'Mansarovar', value: 'Mansarover' },
-    { label: 'Gopal pura', value: 'Gopal pura' },
+   
    
   ];

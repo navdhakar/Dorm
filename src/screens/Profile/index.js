@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet,Linking} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
   Avatar,
@@ -8,15 +8,31 @@ import {
   Text,
   TouchableRipple,
 } from 'react-native-paper';
-
+import Share from "react-native-share";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // import Share from 'react-native-share';
 
 // import files from '../assets/filesBase64';
+const url = "https://oneroomrentals.vercel.app/";
+const title = "OneRoom app";
+const message = "Hey check this awesome place to find and rent pg and rooms.Check this link to download OneRoom";
+const options = {
+  title,
+  url,
+  message,
+};
 
 const ProfileScreen = () => {
   const user = auth().currentUser;
+  const share = async (customOptions = options) => {
+    try {
+      await Share.open(customOptions);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
 
   // const myCustomShare = async() => {
   //   const shareOptions = {
@@ -40,7 +56,7 @@ const ProfileScreen = () => {
         <View style={{flexDirection: 'row', marginTop: 15}}>
           <Avatar.Image 
             source={{
-              uri: 'https://api.adorable.io/avatars/80/abott@adorable.png',
+              uri: user.photoURL,
             }}
             size={80}
             style={{backgroundColor:"#38d3ae"}}
@@ -62,11 +78,11 @@ const ProfileScreen = () => {
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>+91-9887224733</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{user.phoneNumber ? user.phoneNumber : "not provided"}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="email" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>navdepdhakar1@gmail.com</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{user.email}</Text>
         </View>
       </View>
 
@@ -75,19 +91,21 @@ const ProfileScreen = () => {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
-            <Title>₹21240.50</Title>
+            <Title>₹0.0</Title>
             <Caption>Earned</Caption>
           </View>
           <View style={styles.infoBox}>
-            <Title>12</Title>
+            <Title>0</Title>
             <Caption>Successful rentals</Caption>
           </View>
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={async () => {
+          await share();
+        }}>
           <View style={styles.menuItem}>
-            <Icon name="heart-outline" color="#38d3ae" size={25}/>
+            <Icon name="share-variant" color="#38d3ae" size={25}/>
             <Text style={styles.menuItemText}>Share</Text>
           </View>
         </TouchableRipple>
@@ -103,15 +121,12 @@ const ProfileScreen = () => {
             <Text style={styles.menuItemText}>Tell Your Friends</Text>
           </View>
         </TouchableRipple> */}
-        <TouchableRipple onPress={() => {}}>
-          <View style={styles.menuItem}>
-            <Icon name="account-check-outline" color="#38d3ae" size={25}/>
-            <Text style={styles.menuItemText}>Support</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => {auth()
-  .signOut()
-  .then(() => console.log('User signed out!'));}}>
+        
+        <TouchableRipple onPress={() => {
+                        auth()
+                        .signOut()
+                        .then(() => console.log('User signed out!'));
+                        }}>
           <View style={styles.menuItem}>
             <Icon name="account-check-outline" color="#38d3ae" size={25}/>
             <Text style={styles.menuItemText}>Signout</Text>

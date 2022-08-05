@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, ImageBackground, Text, Pressable, ScrollView, StatusBar,Dimensions} from 'react-native';
+import {View, ImageBackground, Text, Pressable, ScrollView, StatusBar,Dimensions,ActivityIndicator} from 'react-native';
 import styles from './styles';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -16,9 +16,11 @@ const HomeScreen = (props) => {
   const [value, setValue] = useState(null);
   const [rental_data, setrental_data] = useState([]);
   const [state, setstate] = useState(null);
-  const [city, setcity] = useState(null);
+  const [city, setcity] = useState();
   const [area, setarea] = useState(null);
   const [search, setsearch] = useState(false)
+  const [loading, setloading] = useState(false)
+  const [homeemptyscreen, sethomeemptyscreen] = useState(true)
   console.log(process.env.NODE_ENV)
   const renderItem = (item) => {
 
@@ -38,6 +40,7 @@ const HomeScreen = (props) => {
   };
   
   const getcustomrentaldata = async () => {
+    setloading(true)
     const location_data = {
       state:state,
       city:city,
@@ -51,11 +54,36 @@ const HomeScreen = (props) => {
         headers: { 'Content-Type': 'application/json' },
       })
       const json = await response.json();
+      setloading(false)
       console.log(json)
       setrental_data([])
       setrental_data(json)
       setsearch(!search)
+      sethomeemptyscreen(false)
       console.log(rental_data)
+      return json;
+       
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getcustomrentalarea = async () => {
+    const location_data = {
+      city:city.toUpperCase(),
+    }
+    console.log(city)
+    try {
+      const response = await fetch(`${serverURI}/post/rent_stay/rental_area`, {
+        method: "POST",
+        body: JSON.stringify(location_data),// *GET, POST, PUT, DELETE, etc.
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const json = await response.json();
+      console.log(json)
+      json.forEach(element => {
+        data_area.push({label:element.area, value:element.area})
+      });
+      
       return json;
        
     } catch (error) {
@@ -80,6 +108,10 @@ const HomeScreen = (props) => {
   console.log(initial_rental_data)
   setrental_data(places)
   }, []);
+  useEffect(() => {
+    getcustomrentalarea()
+    }, [city]);
+  
   useEffect(() => {
     setrental_data(rental_data)
     }, [search]);
@@ -139,6 +171,7 @@ const HomeScreen = (props) => {
         value={city}
         onChange={item => {
           setcity(item.value);
+          
         }}
         // renderLeftIcon={() => (
         //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
@@ -177,8 +210,13 @@ const HomeScreen = (props) => {
 
         
       </ImageBackground>
-      <PostScreen rental_data = {rental_data} />
+      {
+        homeemptyscreen ? <View style={{backgroundColor:'#38d3ae', borderRadius:10, marginTop:30, padding:10}}><Text style={{fontSize:25, color:'white'}}>Tap the search and find best accomadation for you 🔎.</Text></View>:null
+      }
       
+      {
+        loading ? <ActivityIndicator size="large" color="#38d3ae" style={{marginTop:20}} /> :<PostScreen rental_data = {rental_data} />
+      }
       </ScrollView>
     </View>
   );

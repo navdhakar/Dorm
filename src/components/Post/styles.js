@@ -33,7 +33,22 @@ const styles = StyleSheet.create({
   totalPrice: {
     color: '#5b5b5b',
     textDecorationLine: 'underline',
-  }
+  },
+  button: {
+    backgroundColor: '#38d3ae',
+    width: 100,
+    height: 40,
+    borderRadius: 10,
+    
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color:"#fff"
+  },
+
 });
 
 export default styles;

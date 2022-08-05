@@ -1,1 +1,1 @@
-export const serverURI = process.env.NODE_ENV == "production" ? "https://codejet.herokuapp.com" : "http://192.168.45.199:8002";
+export const serverURI = process.env.NODE_ENV == "production" ? "https://oneroomrentals.herokuapp.com" : "http://192.168.247.199:8002";
